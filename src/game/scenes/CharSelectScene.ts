@@ -18,6 +18,9 @@ export class CharSelectScene extends Phaser.Scene {
   private isTransitioning: boolean = false;
   create(): void {
     this.isTransitioning = false;
+    // Reset camera state (may be faded-out from ResultScene transition)
+    this.cameras.main.setAlpha(1);
+    this.cameras.main.resetFX();
     const w = GAME_WIDTH;
     const h = GAME_HEIGHT;
     this.selectedIndex = 0;

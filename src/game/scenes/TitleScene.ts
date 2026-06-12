@@ -9,6 +9,8 @@ export class TitleScene extends Phaser.Scene {
 
   create(): void {
     this.isTransitioning = false;
+    this.cameras.main.setAlpha(1);
+    this.cameras.main.resetFX();
     const w = GAME_WIDTH;
     const h = GAME_HEIGHT;
 

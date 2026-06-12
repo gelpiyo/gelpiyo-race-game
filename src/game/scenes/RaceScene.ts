@@ -80,6 +80,8 @@ export class RaceScene extends Phaser.Scene {
   private isTransitioning: boolean = false;
   create(): void {
     this.isTransitioning = false;
+    this.cameras.main.setAlpha(1);
+    this.cameras.main.resetFX();
     this.racePhase = 'countdown';
     this.countdownTimer = 4;
     this.raceTimer = 0;
