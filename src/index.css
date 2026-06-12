@@ -383,3 +383,48 @@ html, body, #root {
   background: transparent;
   cursor: pointer;
 }
+
+/* ======== Card selection tap zones (HTML overlay) ======== */
+.game-card-grid {
+  position: fixed;
+  display: grid;
+  z-index: 80000;
+  pointer-events: auto;
+}
+
+/* CharSelect: 2x2 grid positioned over the character cards */
+.game-card-grid-char {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  height: 60%;
+}
+
+/* CourseSelect: 2x3 grid positioned over the course cards */
+.game-card-grid-course {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 6px;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 68%;
+}
+
+.game-card-tap {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+}
+.game-card-tap:active {
+  background: rgba(14, 165, 233, 0.15);
+  border-radius: 8px;
+}

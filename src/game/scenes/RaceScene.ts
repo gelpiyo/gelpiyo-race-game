@@ -226,6 +226,7 @@ export class RaceScene extends Phaser.Scene {
       this.allKarts = [];
       this.itemBoxSprites = [];
       this.smokes = [];
+      this.input.keyboard?.removeAllListeners();
     });
   }
 

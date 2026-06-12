@@ -77,6 +77,9 @@ export class CourseSelectScene extends Phaser.Scene {
     // ── RACE START button is now HTML overlay (GameButtons) ──
 
     // ── Keyboard nav ──────────────────────────────────────────────────────────
+    // Clear stale keyboard listeners from previous scene entry
+    this.input.keyboard?.removeAllListeners();
+
     const n = COURSES.length;
     this.input.keyboard?.on('keydown-LEFT',  () => { this.selectedIndex = (this.selectedIndex - 1 + n) % n; this.updateSelection(); });
     this.input.keyboard?.on('keydown-RIGHT', () => { this.selectedIndex = (this.selectedIndex + 1) % n; this.updateSelection(); });
@@ -98,9 +101,20 @@ export class CourseSelectScene extends Phaser.Scene {
         this.isTransitioning = true;
         Transition.playShutterClose(this, 300, () => this.scene.start('CharSelectScene'));
       }
+      // Course selection via HTML overlay
+      if (typeof e.detail === 'string' && e.detail.startsWith('selectCourse_')) {
+        const idx = parseInt(e.detail.split('_')[1]);
+        if (!isNaN(idx) && idx >= 0 && idx < COURSES.length) {
+          this.selectedIndex = idx;
+          this.updateSelection();
+        }
+      }
     }) as EventListener;
     window.addEventListener('game-button', btnHandler);
-    this.events.once('shutdown', () => window.removeEventListener('game-button', btnHandler));
+    this.events.once('shutdown', () => {
+      window.removeEventListener('game-button', btnHandler);
+      this.input.keyboard?.removeAllListeners();
+    });
 
     Transition.playShutterOpen(this, 300);
   }

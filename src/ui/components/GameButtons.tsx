@@ -26,21 +26,45 @@ export const GameButtons: React.FC<GameButtonsProps> = ({ screen }) => {
     );
   }
 
-  // Character select: NEXT
+  // Character select: 4 card tap areas + NEXT button
   if (screen === 'charSelect') {
     return (
-      <button
-        className="game-overlay-btn game-btn-next"
-        onTouchStart={(e) => { e.preventDefault(); emit('charSelectNext'); }}
-        onMouseDown={() => emit('charSelectNext')}
-      >NEXT ▶</button>
+      <>
+        {/* Invisible tap zones over the 4 character cards (2x2 grid) */}
+        <div className="game-card-grid game-card-grid-char">
+          {[0,1,2,3].map(i => (
+            <button
+              key={i}
+              className="game-overlay-btn game-card-tap"
+              onTouchStart={(e) => { e.preventDefault(); emit(`selectChar_${i}`); }}
+              onMouseDown={() => emit(`selectChar_${i}`)}
+            />
+          ))}
+        </div>
+        <button
+          className="game-overlay-btn game-btn-next"
+          onTouchStart={(e) => { e.preventDefault(); emit('charSelectNext'); }}
+          onMouseDown={() => emit('charSelectNext')}
+        >NEXT ▶</button>
+      </>
     );
   }
 
-  // Course select: BACK + RACE START
+  // Course select: 6 card tap areas + BACK + RACE START
   if (screen === 'courseSelect') {
     return (
       <>
+        {/* Invisible tap zones over the 6 course cards (2x3 grid) */}
+        <div className="game-card-grid game-card-grid-course">
+          {[0,1,2,3,4,5].map(i => (
+            <button
+              key={i}
+              className="game-overlay-btn game-card-tap"
+              onTouchStart={(e) => { e.preventDefault(); emit(`selectCourse_${i}`); }}
+              onMouseDown={() => emit(`selectCourse_${i}`)}
+            />
+          ))}
+        </div>
         <button
           className="game-overlay-btn game-btn-back"
           onTouchStart={(e) => { e.preventDefault(); emit('back'); }}

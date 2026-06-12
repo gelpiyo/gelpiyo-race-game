@@ -70,6 +70,9 @@ export class CharSelectScene extends Phaser.Scene {
     const btnBg = this.add.graphics();
     // NEXT button is now HTML overlay (GameButtons)
 
+    // Clear any stale keyboard listeners from previous scene entry
+    this.input.keyboard?.removeAllListeners();
+
     this.input.keyboard?.on('keydown-LEFT', () => {
       this.selectedIndex = (this.selectedIndex + 3) % 4;
       this.updateSelection();
@@ -89,15 +92,26 @@ export class CharSelectScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-ENTER', () => this.startRace());
     this.input.keyboard?.on('keydown-Z', () => this.startRace());
 
-    // Play transition entering the scene
+    // HTML overlay for card selection (Phaser zones are unreliable after scene restart)
     window.dispatchEvent(new CustomEvent('game-screen', { detail: 'charSelect' }));
 
     const btnHandler = ((e: CustomEvent) => {
       if (this.isTransitioning) return;
       if (e.detail === 'charSelectNext') this.startRace();
+      // Card selection via HTML overlay
+      if (typeof e.detail === 'string' && e.detail.startsWith('selectChar_')) {
+        const idx = parseInt(e.detail.split('_')[1]);
+        if (!isNaN(idx) && idx >= 0 && idx < 4) {
+          this.selectedIndex = idx;
+          this.updateSelection();
+        }
+      }
     }) as EventListener;
     window.addEventListener('game-button', btnHandler);
-    this.events.once('shutdown', () => window.removeEventListener('game-button', btnHandler));
+    this.events.once('shutdown', () => {
+      window.removeEventListener('game-button', btnHandler);
+      this.input.keyboard?.removeAllListeners();
+    });
 
     Transition.playShutterOpen(this, 300);
   }
