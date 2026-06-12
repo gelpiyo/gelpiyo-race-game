@@ -412,4 +412,13 @@ export class CourseGenerator {
     const idx = (py*s+px)*4;
     return [this.imageData.data[idx], this.imageData.data[idx+1], this.imageData.data[idx+2], this.imageData.data[idx+3]];
   }
+
+  /** Free canvas memory. Must be called before discarding the instance. */
+  dispose(): void {
+    this.canvas.width = 0;
+    this.canvas.height = 0;
+    (this as any).imageData = null;
+    (this as any).collisionData = null;
+  }
+
 }

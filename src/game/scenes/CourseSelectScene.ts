@@ -257,6 +257,10 @@ export class CourseSelectScene extends Phaser.Scene {
     // The generation takes ~0.5-1.5s and blocks the main thread.
     this.time.delayedCall(100, () => {
       const course = COURSES[this.selectedIndex];
+      // Dispose old course generator to free ~128MB canvas memory
+      const oldGen = this.registry.get('courseGenerator') as CourseGenerator | undefined;
+      if (oldGen && oldGen.dispose) oldGen.dispose();
+
       const gen = new CourseGenerator();
       const trackTex  = this.textures.get('track_pattern').getSourceImage() as HTMLImageElement;
       

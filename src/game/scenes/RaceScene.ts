@@ -207,11 +207,25 @@ export class RaceScene extends Phaser.Scene {
 
     Transition.playShutterOpen(this, 300);
 
-    // Cleanup stale textures on shutdown to prevent freeze on re-entry
+    // Cleanup stale textures AND dispose heavy objects on shutdown
     this.events.once('shutdown', () => {
       if (this.textures.exists('mode7ground')) {
         this.textures.remove('mode7ground');
       }
+      // Free Mode7Renderer canvas memory (~1MB)
+      if (this.mode7 && this.mode7.dispose) {
+        this.mode7.dispose();
+      }
+      // Clear all kart sprite/shadow references
+      this.kartSprites.clear();
+      this.kartShadows.clear();
+      this.kartTiresL.clear();
+      this.kartTiresR.clear();
+      this.tireAngles.clear();
+      this.npcs = [];
+      this.allKarts = [];
+      this.itemBoxSprites = [];
+      this.smokes = [];
     });
   }
 

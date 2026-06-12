@@ -159,4 +159,14 @@ export class Mode7Renderer {
   getCanvas(): HTMLCanvasElement {
     return this.canvas;
   }
+
+  /** Free internal canvas memory */
+  dispose(): void {
+    this.canvas.width = 0;
+    this.canvas.height = 0;
+    (this as any).pixels = null;
+    (this as any).imageData = null;
+    (this as any).skyGradient = null;
+  }
+
 }
