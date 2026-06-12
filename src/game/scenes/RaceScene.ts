@@ -204,6 +204,13 @@ export class RaceScene extends Phaser.Scene {
     this.events.once('shutdown', () => window.removeEventListener('game-button', btnHandler));
 
     Transition.playShutterOpen(this, 300);
+
+    // Cleanup stale textures on shutdown to prevent freeze on re-entry
+    this.events.once('shutdown', () => {
+      if (this.textures.exists('mode7ground')) {
+        this.textures.remove('mode7ground');
+      }
+    });
   }
 
   /**

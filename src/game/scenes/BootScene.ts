@@ -54,8 +54,8 @@ export class BootScene extends Phaser.Scene {
     }
 
     this.load.image('title_bg', 'assets/ui/title_bg_new.png');
-    this.load.image('result_bg', '/result_bg.png');
-    this.load.image('item_egg', '/item_egg.png');
+    this.load.image('result_bg', 'result_bg.png');
+    this.load.image('item_egg', 'item_egg.png');
     this.load.image('char_select_bg', 'assets/ui/char_select_bg.png');
     this.load.image('logo', 'assets/ui/logo.png');
 

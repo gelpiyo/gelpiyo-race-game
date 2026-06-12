@@ -258,7 +258,13 @@ export class CourseSelectScene extends Phaser.Scene {
       const gen = new CourseGenerator();
       const trackTex  = this.textures.get('track_pattern').getSourceImage() as HTMLImageElement;
       
-      gen.generate(course, trackTex);
+      try {
+        gen.generate(course, trackTex);
+      } catch (e) {
+        console.error('Course generation error:', e);
+        this.isTransitioning = false;
+        return;
+      }
 
       if (this.textures.exists('courseTexture')) this.textures.remove('courseTexture');
       this.textures.addCanvas('courseTexture', gen.canvas);
