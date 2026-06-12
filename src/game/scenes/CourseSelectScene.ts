@@ -24,7 +24,7 @@ export class CourseSelectScene extends Phaser.Scene {
   create(): void {
     this.isTransitioning = false;
     this.cameras.main.setAlpha(1);
-    this.cameras.main.resetFX();
+    this.cameras.main.fadeEffect.reset();
     const w = GAME_WIDTH;
     const h = GAME_HEIGHT;
     this.selectedIndex = 0;

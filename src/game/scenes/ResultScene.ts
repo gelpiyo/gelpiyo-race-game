@@ -261,16 +261,13 @@ export class ResultScene extends Phaser.Scene {
       if (isTransitioning) return;
       isTransitioning = true;
       if (e.detail === 'retry') {
-        this.cameras.main.fadeOut(350, 0, 0, 0);
-        this.time.delayedCall(350, () => this.scene.start('RaceScene'));
+        Transition.playShutterClose(this, 300, () => this.scene.start('RaceScene'));
       }
       if (e.detail === 'charSelect') {
-        this.cameras.main.fadeOut(350, 0, 0, 0);
-        this.time.delayedCall(350, () => this.scene.start('CharSelectScene'));
+        Transition.playShutterClose(this, 300, () => this.scene.start('CharSelectScene'));
       }
       if (e.detail === 'toTitle') {
-        this.cameras.main.fadeOut(350, 0, 0, 0);
-        this.time.delayedCall(350, () => {
+        Transition.playShutterClose(this, 300, () => {
           window.dispatchEvent(new CustomEvent('game-screen', { detail: 'title' }));
           this.scene.start('TitleScene');
         });
@@ -279,7 +276,6 @@ export class ResultScene extends Phaser.Scene {
     window.addEventListener('game-button', btnHandler);
     this.events.once('shutdown', () => window.removeEventListener('game-button', btnHandler));
 
-    this.cameras.main.fadeIn(500);
     window.dispatchEvent(new CustomEvent('game-screen', { detail: 'result' }));
     Transition.playShutterOpen(this, 300);
   }
