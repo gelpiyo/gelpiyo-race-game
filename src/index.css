@@ -1,0 +1,385 @@
+:root {
+  --bg-dark: #0f172a;
+  --text-primary: #f8fafc;
+  --accent-gold: #fde047;
+  --accent-blue: #0ea5e9;
+  --accent-pink: #f43f5e;
+  --accent-red: #ef4444;
+  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000000;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--text-primary);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  overscroll-behavior: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+
+#game-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#game-container canvas {
+  display: block;
+  touch-action: none;
+}
+
+/* ========================================
+   Top-right action buttons (Y / X)
+   Sits below the in-game POS panel area
+   ======================================== */
+.vpad-action-buttons {
+  position: fixed;
+  bottom: 28px;
+  right: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  align-items: center;
+  pointer-events: auto;
+  z-index: 99999;
+}
+
+/* ========================================
+   Bottom-left D-Pad
+   ======================================== */
+.vpad-bottom-dpad {
+  position: fixed;
+  bottom: 28px;
+  left: 24px;
+  pointer-events: auto;
+  z-index: 99999;
+}
+
+/* ========================================
+   D-Pad Zone
+   ======================================== */
+.dpad-zone {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(10, 15, 28, 0.55);
+  border: 2px solid rgba(14, 165, 233, 0.35);
+  box-shadow:
+    0 0 20px rgba(14, 165, 233, 0.15),
+    inset 0 0 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  touch-action: none;
+  cursor: pointer;
+}
+
+/* Direction arrow markers */
+.dpad-arrows {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dpad-arrow {
+  position: absolute;
+  font-size: 12px;
+  color: rgba(14, 165, 233, 0.4);
+  line-height: 1;
+}
+
+.dpad-up {
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dpad-down {
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dpad-left-arrow {
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dpad-right-arrow {
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Movable center knob */
+.dpad-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    rgba(14, 165, 233, 0.5),
+    rgba(14, 165, 233, 0.2) 50%,
+    rgba(10, 15, 28, 0.6)
+  );
+  border: 2px solid rgba(14, 165, 233, 0.6);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(14, 165, 233, 0.3);
+  opacity: 0.4;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+/* ========================================
+   Shared button base
+   ======================================== */
+.vpad-btn {
+  border: none;
+  border-radius: 50%;
+  font-weight: 700;
+  font-family: system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.1s ease-out;
+  min-width: 64px;
+  height: 48px;
+  padding: 0 16px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  touch-action: none;
+  border-radius: 24px;
+}
+
+.vpad-btn:active {
+  transform: scale(0.9);
+}
+
+/* Y button (Jump) */
+.vpad-btn-jump {
+  color: rgba(253, 224, 71, 0.9);
+  background: rgba(253, 224, 71, 0.12);
+  border: 1.5px solid rgba(253, 224, 71, 0.45);
+  box-shadow: 0 0 12px rgba(253, 224, 71, 0.2), inset 0 1px 3px rgba(255,255,255,0.1);
+}
+.vpad-btn-jump:active {
+  background: rgba(253, 224, 71, 0.35);
+  box-shadow: 0 0 25px rgba(253, 224, 71, 0.6);
+  color: #fde047;
+}
+
+/* X button (Item) */
+.vpad-btn-item {
+  color: rgba(74, 222, 128, 0.9);
+  background: rgba(74, 222, 128, 0.12);
+  border: 1.5px solid rgba(74, 222, 128, 0.45);
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.2), inset 0 1px 3px rgba(255,255,255,0.1);
+}
+.vpad-btn-item:active {
+  background: rgba(74, 222, 128, 0.35);
+  box-shadow: 0 0 25px rgba(74, 222, 128, 0.6);
+  color: #4ade80;
+}
+
+/* Base Scene UI overrides */
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ========================================
+   HTML Overlay Buttons (mobile-safe)
+   These sit above the Phaser canvas
+   ======================================== */
+.game-overlay-btn {
+  position: fixed;
+  z-index: 90000;
+  border: none;
+  font-family: 'Impact', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  pointer-events: auto;
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+.game-overlay-btn:active {
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+/* Course Select: BACK */
+.game-btn-back {
+  top: 12px;
+  left: 12px;
+  font-size: 13px;
+  color: #94a3b8;
+  background: rgba(10, 15, 28, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+
+/* Course Select: RACE START */
+.game-btn-start {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.9), rgba(6, 95, 140, 0.9));
+  border: 2px solid rgba(14, 165, 233, 0.8);
+  border-radius: 12px;
+  padding: 14px 40px;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+.game-btn-start:active {
+  transform: translateX(-50%) scale(0.95);
+  box-shadow: 0 0 30px rgba(14, 165, 233, 0.7);
+}
+
+/* Race: QUIT */
+.game-btn-quit {
+  top: 140px;
+  left: 8px;
+  font-size: 12px;
+  color: #94a3b8;
+  background: rgba(10, 15, 28, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+/* Race: SKIP */
+.game-btn-skip {
+  top: 140px;
+  right: 8px;
+  font-size: 12px;
+  color: #94a3b8;
+  background: rgba(10, 15, 28, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+/* Result buttons container */
+.game-result-buttons {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  z-index: 90000;
+  pointer-events: auto;
+  width: 90%;
+  max-width: 380px;
+}
+
+.game-btn-retry {
+  position: relative;
+  font-size: 15px;
+  color: #ffffff;
+  background: rgba(5, 150, 105, 0.85);
+  border: 1.5px solid rgba(52, 211, 153, 0.7);
+  border-radius: 10px;
+  padding: 12px 20px;
+  flex: 1;
+  min-width: 100px;
+}
+
+.game-btn-charsel {
+  position: relative;
+  font-size: 15px;
+  color: #ffffff;
+  background: rgba(37, 99, 235, 0.85);
+  border: 1.5px solid rgba(96, 165, 250, 0.7);
+  border-radius: 10px;
+  padding: 12px 20px;
+  flex: 1;
+  min-width: 100px;
+}
+
+.game-btn-totitle {
+  position: relative;
+  font-size: 15px;
+  color: #ffffff;
+  background: rgba(124, 58, 237, 0.85);
+  border: 1.5px solid rgba(167, 139, 250, 0.7);
+  border-radius: 10px;
+  padding: 12px 28px;
+  width: 100%;
+}
+
+/* Char Select: NEXT */
+.game-btn-next {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.9), rgba(6, 95, 140, 0.9));
+  border: 2px solid rgba(14, 165, 233, 0.8);
+  border-radius: 12px;
+  padding: 14px 40px;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+.game-btn-next:active {
+  transform: translateX(-50%) scale(0.95);
+  box-shadow: 0 0 30px rgba(14, 165, 233, 0.7);
+}
+
+/* Title screen full overlay */
+.game-btn-fullscreen {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: transparent;
+  cursor: pointer;
+}
