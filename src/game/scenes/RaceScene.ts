@@ -38,7 +38,7 @@ export class RaceScene extends Phaser.Scene {
   private npcs: NPC[] = [];
   private allKarts: Kart[] = [];
   private itemSystem!: ItemSystem;
-  private physics!: Physics2D;
+  public customPhysics!: Physics2D;
   private inputCtrl!: TouchController;
   private groundSprite!: Phaser.GameObjects.Image;
   private kartSprites: Map<Kart, Phaser.GameObjects.Image> = new Map();
@@ -511,7 +511,7 @@ export class RaceScene extends Phaser.Scene {
       }
     }
 
-    this.physics.resolveKartCollisions(this.allKarts);
+    this.customPhysics.resolveKartCollisions(this.allKarts);
     this.checkInvincibleCollisions();
     this.checkPlayerHit();
     this.itemSystem.update(dt);
